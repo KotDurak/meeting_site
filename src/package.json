@@ -8,10 +8,12 @@
     "devDependencies": {
         "axios": "^1.7.2",
         "laravel-vite-plugin": "^1.0.0",
+        "sass": "^1.77.6",
         "vite": "^5.3.3"
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^5.0.5",
+        "bootstrap": "^5.3.3",
         "vue": "^3.2.20",
         "vue-loader": "^17.3.1",
         "vue-router": "^4.4.0"

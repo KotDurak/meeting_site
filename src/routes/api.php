@@ -34,3 +34,28 @@ Route::get('/users', function() {
         ]
     ];
 });
+
+Route::post('/register', function(Request $request) {
+    $login =  $request->email;
+    $password = $request->password;
+
+    return [
+        'data'  => compact('login', 'password')
+    ];
+});
+
+Route::post('/login', function() {
+
+});
+
+
+Route::post('/token/create', function(Request $request) {
+    $user = \App\Models\User::factory()->create([
+       'name'   => 'tigr',
+        'email' => 'tigr@mail.com',
+    ]);
+
+    $token = $user->createToken('app:user');
+
+    return ['token' => $token->plainTextToken];
+});

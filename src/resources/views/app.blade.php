@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     @vite('resources/js/app.js')
-    @vite('resources/js/app.css')
+    @vite('resources/css/app.scss')
 </head>
-<body>
-<div id="app"></div>
+<body class="h-100">
+<div id="app" class="d-flex flex-column h-100"></div>
 </body>
 </html>
 

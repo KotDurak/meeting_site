@@ -14,6 +14,10 @@ const routes = [
         component: () => import("../Pages/Users/UserCard.vue")
     },
     {
+        path: '/register',
+        component: () => import("../Pages/RegisterPage.vue"),
+    },
+    {
         path: "/:pathMatch(.*)*",
         component: () => import("../Pages/NotFound.vue")
     }
