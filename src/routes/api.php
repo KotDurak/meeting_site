@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,8 @@ Route::post('/register', function(Request $request) {
         'data'  => compact('login', 'password')
     ];
 });
+
+Route::post('/register', [RegisterController::class, 'register']);
 
 Route::post('/login', function() {
 
