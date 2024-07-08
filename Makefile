@@ -10,7 +10,7 @@ build:
 ch_build:
 	sudo chmod -R 777 src/public/build/
 migrate:
-	docker-compose run --rm artisan migrate
+	docker-compose run --rm artisan migrate --force
 install:
 	docker-compose run --rm composer install
 init:
@@ -19,3 +19,11 @@ npm_i:
 	docker-compose run --rm npm install
 unit:
 	docker-compose run --rm artisan test --testsuite=Unit --stop-on-failure
+create_cp:
+	cp ./src/.env.example ./src/.env
+deploy: create_cp
+	make install
+	make npm_i
+	make migrate
+	make build
+
