@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,7 +17,7 @@ class RegisterShipped extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public User $user)
     {
         //
     }
@@ -27,7 +28,7 @@ class RegisterShipped extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Register Shipped',
+            subject: 'Регистрация на сайте '  . env('APP_NAME'),
         );
     }
 

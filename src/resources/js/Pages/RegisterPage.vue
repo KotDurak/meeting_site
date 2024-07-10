@@ -7,8 +7,9 @@ import {useRouter} from "vue-router";
 const router = useRouter();
 
 const formData = reactive({
-   email: '',
-   password: ''
+    email: '',
+    password: '',
+    name: '',
 });
 
 const submitted = ref(false);
@@ -33,6 +34,10 @@ const register = async () => {
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input v-model="formData.password" type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="name">Имя</label>
+                <input v-model="formData.name" class="form-control" id="name"/>
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
