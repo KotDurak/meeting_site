@@ -14,8 +14,25 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
-            return redirect('/');
+        $credentials['is_activated'] = 1;
+
+        if (Auth::attempt($credentials, true)) {
+            return [
+                'code'      => 0,
+                'message'   => 'OK'
+            ];
         }
+
+        abort(400, 'Неверный логин или пароль');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return [
+            'code'  => 0,
+            'message'   => 'OK'
+        ];
     }
 }

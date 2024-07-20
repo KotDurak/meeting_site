@@ -2,9 +2,10 @@
 import {reactive, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
-
+import {useStore} from "vuex";
 
 const router = useRouter();
+const store = useStore();
 
 const formData = reactive({
     email: '',
@@ -16,10 +17,16 @@ const submitted = ref(false);
 
 const register = async () => {
   submitted.value = true;
-  const result = await axios.post('api/register', formData);
-  console.log(result.data);
+  store.dispatch('messages/clearMessages');
+  try {
+      const result = await axios.post('/api/register', formData);
+      router.push('/register/confirm');
+  } catch (error) {
+      const message = error?.response?.data?.message;
+      store.dispatch('messages/sendError', message);
+      submitted.value = false;
+  }
 
-  router.push('/test');
 };
 </script>
 

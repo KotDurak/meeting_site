@@ -1,6 +1,14 @@
 <script setup>
-
+import {onMounted} from "vue";
 import MainPage from "./components/MainPage.vue";
+import {useStore} from "vuex";
+
+const store = useStore();
+
+onMounted(() => {
+   store.dispatch('auth/checkUser');
+});
+
 </script>
 
 <template>

@@ -1,4 +1,36 @@
 <script setup>
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+import MessagesList from "./ui/MessagesList.vue";
+import {computed, ref} from "vue";
+
+const store = useStore();
+const router = useRouter();
+
+const user = computed(() => {
+    return store.getters['auth/getUser'];
+});
+
+const show = ref(false);
+const showMenu = () => {
+    show.value = !show.value;
+    console.log(show.value);
+};
+
+const hideMenu = () => {
+  show.value = false;
+};
+
+const logout = async () => {
+    hideMenu();
+    const response = axios.post('/api/logout');
+    store.dispatch('auth/logout');
+    router.push('/');
+};
+
+const isGuest = computed(() => {
+   return store.getters['auth/getIsGuest'];
+});
 
 </script>
 
@@ -21,10 +53,63 @@
                             <a class="nav-link" href="#">Ссылка</a>
                         </li>
                     </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-                        <button class="btn btn-outline-success" type="submit">Поиск</button>
-                    </form>
+                    <div class="d-flex me-5">
+                        <div class="dropdown" v-if="user">
+                            <a class="btn btn-secondary dropdown-toggle"
+                               href="#" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false"
+                               @click="showMenu"
+                            >
+                                {{ user.name }}
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                :class="{show: show}"
+                                aria-labelledby="dropdownMenuLink"
+
+                            >
+                                <li>
+                                    <router-link
+                                        class="dropdown-item"
+                                        to="/user/profile"
+                                        @click="hideMenu"
+                                    >
+                                         Профиль
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <a
+                                        class="dropdown-item"
+                                        @click.prevent="logout"
+                                       href="#">Выйти</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="isGuest">
+                            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                                <li class="nav-item">
+                                    <router-link
+                                        class="nav-link"
+                                        to="/login"
+                                        @click="hideMenu"
+                                    >
+                                        Войти
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link
+                                        class="nav-link"
+                                        to="/register"
+                                        @click="hideMenu"
+                                    >
+                                        Регистрация
+                                    </router-link>
+                                </li>
+                            </ul>
+
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -33,6 +118,9 @@
     <!-- Начало содержимого страницы -->
     <main class="flex-shrink-0">
         <div class="container">
+            <div class="row">
+                <MessagesList/>
+            </div>
            <slot/>
         </div>
     </main>

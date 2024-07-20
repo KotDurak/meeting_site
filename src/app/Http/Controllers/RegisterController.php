@@ -33,8 +33,7 @@ class RegisterController extends Controller
         $user->sms = $this->getSms();
         $user->save();
 
-
-        Mail::to('DarkProkuror@mail.ru')->send(new RegisterShipped($user));
+       // Mail::to($user)->send(new RegisterShipped($user));
 
         return [
             'code'  => 0,
@@ -51,8 +50,32 @@ class RegisterController extends Controller
         return $smsCode;
     }
 
-    public function confirm()
+    public function confirm(Request $request)
     {
+        $request->validate([
+            'code'  => ['required'],
+        ]);
 
+        $code = trim($request->input('code'));
+
+        /**
+         * @var User $user
+        */
+        $user = User::where('sms', $code)->first();
+
+        if (empty($user)) {
+            abort(400, 'Не верный код подтверждения');
+        }
+
+        $user->is_activated = 1;
+        $user->sms = '';
+        $user->save();
+
+        Auth::login($user, true);
+
+        return [
+            'code'  => 0,
+            'message' => 'OK'
+        ];
     }
 }

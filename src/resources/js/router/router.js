@@ -6,8 +6,8 @@ const routes = [
         component: () => import("../Pages/HomeRoute.vue")
     },
     {
-        path: "/test",
-        component: () => import("../Pages/TestRoute.vue")
+        path: "/user/profile",
+        component: () => import('../Pages/Users/ProfileCard.vue')
     },
     {
         path: "/profile/:id",
@@ -16,6 +16,14 @@ const routes = [
     {
         path: '/register',
         component: () => import("../Pages/RegisterPage.vue"),
+    },
+    {
+        path: '/register/confirm',
+        component: () => import("../Pages/RegisterConfirm.vue"),
+    },
+    {
+        path: '/login',
+        component: () => import('../Pages/LoginPage.vue'),
     },
     {
         path: "/:pathMatch(.*)*",
