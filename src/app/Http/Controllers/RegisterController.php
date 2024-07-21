@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\RegisterShipped;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,7 @@ class RegisterController extends Controller
 
         $user->password = Hash::make($registerData['password']);
         $user->sms = $this->getSms();
+        $user->last_sms_generated = Carbon::now();
         $user->save();
 
        // Mail::to($user)->send(new RegisterShipped($user));
@@ -76,6 +78,33 @@ class RegisterController extends Controller
         return [
             'code'  => 0,
             'message' => 'OK'
+        ];
+    }
+
+    public function retryConfirm()
+    {
+        /**
+         * @var User $user
+        */
+        $user = Auth::getUser();
+
+        $current = Carbon::now();
+        $lastActivated = new Carbon($user->last_sms_generated);
+        $time = $current->diff($lastActivated);
+
+        if ($time->i < User::MINUTES_DURABLE) {
+            $message = sprintf('С момента отправки письма должно пройти минимум  %s минут', User::MINUTES_DURABLE);
+            abort(400, $message);
+        }
+
+        $user->sms = $this->getSms();
+        $user->last_sms_generated = Carbon::now();
+        $user->save();
+        Mail::to($user)->send(new RegisterShipped($user));
+
+        return [
+            'code'    => 0,
+            'message' => 'OK',
         ];
     }
 }

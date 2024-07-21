@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
@@ -49,6 +50,7 @@ Route::prefix('/register')->group(function() {
 
     Route::post('/', [RegisterController::class, 'register']);
 
+    Route::post('/confirm/retry', [RegisterController::class, 'retryConfirm']);
     Route::post('/confirm', [RegisterController::class, 'confirm']);
 });
 
@@ -68,3 +70,5 @@ Route::post('/token/create', function(Request $request) {
 
     return ['token' => $token->plainTextToken];
 });
+
+Route::post('/message', [ChatController::class, 'index']);

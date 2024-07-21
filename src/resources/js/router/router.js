@@ -26,6 +26,10 @@ const routes = [
         component: () => import('../Pages/LoginPage.vue'),
     },
     {
+        path: '/test/chat',
+        component: () => import('../Pages/TestChat.vue'),
+    },
+    {
         path: "/:pathMatch(.*)*",
         component: () => import("../Pages/NotFound.vue")
     }

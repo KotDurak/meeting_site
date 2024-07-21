@@ -12,10 +12,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property  string $sms
  * @property  boolean $is_activated
  * @property $name
+ * @property $last_sms_generated
 */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    const MINUTES_DURABLE = 10;
 
     /**
      * The attributes that are mass assignable.
@@ -46,5 +49,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_activated'  => 'boolean',
+        'last_sms_generated'  => 'timestamp',
     ];
 }

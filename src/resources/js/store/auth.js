@@ -21,13 +21,7 @@ export default {
             let user = getters.getUser;
 
             if (!user) {
-
-                try {
-                    const response = await axios.get('/api/user');
-                    dispatch('login', response.data);
-                } catch (error) {
-                    dispatch('logout');
-                }
+                dispatch('updateUser');
             }
         },
 
@@ -39,7 +33,16 @@ export default {
         login({commit}, user) {
             commit('setUser', user);
             commit('setIsGuest', false);
-        }
+        },
+
+        async updateUser({dispatch}) {
+            try {
+                const response = await axios.get('/api/user');
+                dispatch('login', response.data);
+            } catch (error) {
+                dispatch('logout');
+            }
+        },
     },
 
     getters: {

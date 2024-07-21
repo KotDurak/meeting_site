@@ -3,6 +3,7 @@ import {useStore} from "vuex";
 import {useRouter} from "vue-router";
 import MessagesList from "./ui/MessagesList.vue";
 import {computed, ref} from "vue";
+import UserPanel from "./user/UserPanel.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -119,6 +120,7 @@ const isGuest = computed(() => {
     <main class="flex-shrink-0">
         <div class="container">
             <div class="row">
+                <UserPanel/>
                 <MessagesList/>
             </div>
            <slot/>

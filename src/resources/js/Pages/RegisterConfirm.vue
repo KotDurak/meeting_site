@@ -19,6 +19,7 @@ const confirmCode = async () => {
     try {
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post('/api/register/confirm', formData).then(response => {
+                store.dispatch('auth/updateUser');
                 store.dispatch('auth/checkUser');
                 router.push('/');
             })

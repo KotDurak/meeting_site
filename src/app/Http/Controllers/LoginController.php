@@ -14,8 +14,6 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        $credentials['is_activated'] = 1;
-
         if (Auth::attempt($credentials, true)) {
             return [
                 'code'      => 0,

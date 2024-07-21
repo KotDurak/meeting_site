@@ -80,7 +80,7 @@ services:
       - laravel
 
   npm:
-    image: node:current-alpine
+    image: node:22.2.0
     volumes:
       - ./src:/var/www/html
     ports:

@@ -9,11 +9,18 @@ export default  {
 
     mutations: {
         addMessage(state, message, type) {
-            state.messages.push(message);
+            state.messages.push({
+                ...message,
+                id: new Date().getTime() + '_' + message.type,
+            });
         },
 
         clear(state) {
             state.messages = [];
+        },
+
+        deleteMessage(state, id) {
+            state.messages = state.messages.filter(m => m.id !== id);
         }
     },
 
@@ -21,12 +28,16 @@ export default  {
         sendError({commit}, message) {
             commit('addMessage', {
                 message,
-                type: 'error'
+                type: 'error',
             });
         },
 
         clearMessages({commit}) {
             commit('clear');
+        },
+
+        removeMessage({commit}, id) {
+            commit('deleteMessage', id);
         }
     },
 
