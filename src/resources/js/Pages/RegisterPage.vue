@@ -11,6 +11,8 @@ const formData = reactive({
     email: '',
     password: '',
     name: '',
+    gender: 'male',
+    birthday: null,
 });
 
 const submitted = ref(false);
@@ -46,9 +48,21 @@ const register = async () => {
                 <label for="name">Имя</label>
                 <input v-model="formData.name" class="form-control" id="name"/>
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="male" v-model="formData.gender">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Мужской
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="female" v-model="formData.gender">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Женский
+                </label>
+            </div>
+            <div class="mb-3">
+                <label for="name">Дата рождения</label>
+                <input v-model="formData.birthday" class="form-control"  type="date"/>
             </div>
             <button :disabled="submitted" type="submit"  @click.prevent="register" class="btn btn-primary">Submit</button>
         </form>

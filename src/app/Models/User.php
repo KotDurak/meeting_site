@@ -18,6 +18,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const GENDER_MALE = 'male';
+    const GENDER_FEMALE = 'female';
+
     const MINUTES_DURABLE = 10;
 
     /**
@@ -28,6 +31,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'birthday',
+        'gender',
     ];
 
     /**

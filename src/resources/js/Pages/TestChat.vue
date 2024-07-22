@@ -2,7 +2,7 @@
 import {ref} from "vue"
 import axios from "axios";
 
-Echo.channel('chatbox')
+Echo.private('chatbox')
 .listen('MessageSend', e => {
    console.log(e);
 });

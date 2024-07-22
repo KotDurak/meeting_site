@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Gender;
 use App\Mail\RegisterShipped;
 use App\Models\User;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -18,7 +20,9 @@ class RegisterController extends Controller
         $registerData = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'name'     => ['required'],
+            'name' => ['required'],
+            'gender' => ['required', Rule::enum(Gender::class)],
+            'birthday' => ['required'],
         ]);
 
         if(User::where('email', $registerData['email'])->exists()) {
@@ -28,6 +32,8 @@ class RegisterController extends Controller
         $user = User::make([
             'email' => $registerData['email'],
             'name'  => $registerData['name'],
+            'birthday'  => $registerData['birthday'],
+            'gender'    => $registerData['gender'],
         ]);
 
         $user->password = Hash::make($registerData['password']);

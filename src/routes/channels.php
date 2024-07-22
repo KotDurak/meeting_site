@@ -18,5 +18,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('chatbox', function() {
-    return true;
+    return \Illuminate\Support\Facades\Auth::check();
 });
