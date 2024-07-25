@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,10 @@ Route::post('/token/create', function(Request $request) {
     $token = $user->createToken('app:user');
 
     return ['token' => $token->plainTextToken];
+});
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/user/profile', [ProfileController::class, 'getProfile']);
 });
 
 Route::post('/message', [ChatController::class, 'index']);

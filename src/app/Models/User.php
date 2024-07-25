@@ -13,6 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property  boolean $is_activated
  * @property $name
  * @property $last_sms_generated
+ * @property $about
 */
 class User extends Authenticatable
 {
@@ -33,6 +34,7 @@ class User extends Authenticatable
         'email',
         'birthday',
         'gender',
+        'about',
     ];
 
     /**
