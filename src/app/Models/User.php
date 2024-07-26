@@ -57,5 +57,6 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_activated'  => 'boolean',
         'last_sms_generated'  => 'timestamp',
+        'birthday'  => 'date:Y-m-d',
     ];
 }
