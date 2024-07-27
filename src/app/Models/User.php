@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -14,6 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property $name
  * @property $last_sms_generated
  * @property $about
+ * @deprecated $city_id
 */
 class User extends Authenticatable
 {
@@ -35,6 +37,7 @@ class User extends Authenticatable
         'birthday',
         'gender',
         'about',
+        'city_id',
     ];
 
     /**
@@ -59,4 +62,9 @@ class User extends Authenticatable
         'last_sms_generated'  => 'timestamp',
         'birthday'  => 'date:Y-m-d',
     ];
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
 }

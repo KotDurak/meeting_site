@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,9 @@ Route::post('/token/create', function(Request $request) {
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user/profile', [ProfileController::class, 'getProfile']);
+    Route::post('/user/profile', [ProfileController::class, 'updateProfile']);
 });
 
 Route::post('/message', [ChatController::class, 'index']);
+
+Route::get('/city', [CityController::class, 'list']);

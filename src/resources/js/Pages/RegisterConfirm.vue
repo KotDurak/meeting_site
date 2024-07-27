@@ -22,7 +22,11 @@ const confirmCode = async () => {
                 store.dispatch('auth/updateUser');
                 store.dispatch('auth/checkUser');
                 router.push('/');
-            })
+            }).catch(error => {
+                const message = error?.response?.data?.message;
+                store.dispatch('messages/sendError', message);
+                submitted.value = false;
+            });
         });
     } catch (error) {
         const message = error?.response?.data?.message;

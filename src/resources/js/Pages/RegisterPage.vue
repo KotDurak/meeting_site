@@ -3,6 +3,7 @@ import {reactive, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
+import CityListSelect from "../components/ui/CityListSelect.vue";
 
 const router = useRouter();
 const store = useStore();
@@ -13,6 +14,7 @@ const formData = reactive({
     name: '',
     gender: 'male',
     birthday: null,
+    city_id: null,
 });
 
 const submitted = ref(false);
@@ -38,16 +40,18 @@ const register = async () => {
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
                 <input type="email" v-model="formData.email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <label for="exampleInputPassword1" class="form-label">Пароль</label>
                 <input v-model="formData.password" type="password" class="form-control" id="exampleInputPassword1">
             </div>
             <div class="mb-3">
                 <label for="name">Имя</label>
                 <input v-model="formData.name" class="form-control" id="name"/>
             </div>
+
+            <CityListSelect v-model="formData.city_id"/>
+
             <div class="form-check">
                 <input class="form-check-input" type="radio" value="male" v-model="formData.gender">
                 <label class="form-check-label" for="flexRadioDefault1">
@@ -64,7 +68,13 @@ const register = async () => {
                 <label for="name">Дата рождения</label>
                 <input v-model="formData.birthday" class="form-control"  type="date"/>
             </div>
-            <button :disabled="submitted" type="submit"  @click.prevent="register" class="btn btn-primary">Submit</button>
+            <button
+                :disabled="submitted"
+                type="submit"
+                @click.prevent="register"
+                class="btn btn-primary">
+                Регистрация
+            </button>
         </form>
     </div>
 </template>

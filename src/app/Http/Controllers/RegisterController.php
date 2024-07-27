@@ -23,6 +23,7 @@ class RegisterController extends Controller
             'name' => ['required'],
             'gender' => ['required', Rule::enum(Gender::class)],
             'birthday' => ['required'],
+            'city_id'   => ['integer', 'required'],
         ]);
 
         if(User::where('email', $registerData['email'])->exists()) {
@@ -34,6 +35,7 @@ class RegisterController extends Controller
             'name'  => $registerData['name'],
             'birthday'  => $registerData['birthday'],
             'gender'    => $registerData['gender'],
+            'city_id'   => $registerData['city_id'],
         ]);
 
         $user->password = Hash::make($registerData['password']);
