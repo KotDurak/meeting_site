@@ -23,6 +23,7 @@ const loadUser = async () => {
 };
 
 const showImages = ref(false);
+const showEditProfile = ref(false);
 
 const updateUser = (formData) => {
     loadUser();
@@ -37,15 +38,19 @@ onMounted( async () => {
     <div v-if="userLoaded" class="col-12">
 
         <h1>{{user.name}}</h1>
+        <a href="" @click.prevent="showEditProfile = !showEditProfile">
+            Редактивровать профиль
+        </a>
        <ProfileForm
            :user="user"
            @update="updateUser"
+           v-show="showEditProfile"
         />
-        <div class="row mt-5">
+        <div class="row">
             <div class="col-12">
-                <button class="btn btn-primary" @click="showImages = !showImages">
+                <a href="" @click.prevent="showImages = !showImages">
                     Загрузить изображение
-                </button>
+                </a>
             </div>
             <UserImageForm
                 :user="user"

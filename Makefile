@@ -21,9 +21,12 @@ unit:
 	docker-compose run --rm artisan test --testsuite=Unit --stop-on-failure
 create_cp:
 	cp ./src/.env.example ./src/.env
+storage:
+	docker-compose run --rm artisan storage:link
 deploy: create_cp
 	make install
 	make npm_i
 	make migrate
 	make build
+	make storage
 

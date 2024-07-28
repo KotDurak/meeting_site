@@ -76,6 +76,8 @@ Route::post('/token/create', function(Request $request) {
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user/profile', [ProfileController::class, 'getProfile']);
     Route::post('/user/profile', [ProfileController::class, 'updateProfile']);
+    Route::post('/user/profile/photo', [ProfileController::class, 'uploadPhoto']);
+    Route::get('/user/profile/photo', [ProfileController::class, 'getPhoto']);
 });
 
 Route::post('/message', [ChatController::class, 'index']);
