@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserImage;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateProfileRequest;
@@ -12,12 +14,23 @@ class ProfileController extends Controller
 {
     public function getProfile()
     {
-        $user = User::with('city')
+        /**
+         * @var User $user
+        */
+        $user = User::with([
+            'city',
+            'images',
+        ])
             ->where('id', Auth::id())
             ->first();
 
+        $result = $user->toArray();
+        $result['images'] = $user->images()->get()->map(function(UserImage $img) {
+            return array_merge($img->toArray(), ['photo_url' => $img->imageUrl]);
+        })->toArray();
+
         return [
-            'user'  => $user,
+            'user'  => $result,
         ];
     }
 
@@ -41,12 +54,35 @@ class ProfileController extends Controller
     public function uploadPhoto(Request $request)
     {
         $request->validate([
-            'photo' => ['file', 'extensions:jpg,png,jpeg'],
+            'photo' => ['file', 'extensions:jpg,png,jpeg', 'max:1024'],
         ]);
 
-        $user = Auth::user();
+        $userId = Auth::id();
+        /**
+         * @var User $user
+        */
+        $user = User::findOrFail($userId);
+
+        /**
+         * @var UserImage $userImage
+        */
+        $userImage = UserImage::where('user_id', $userId)->first();
+
         $photo = $request->file('photo');
-        $path  = $photo->store('public/uploads');
+        $path  = $photo->store('uploads', ['disk' => 'public']);
+
+        if (!empty($userImage)) {
+            Storage::disk('public')->delete($userImage->image);
+        }
+
+        if (empty($userImage)) {
+            $user->images()->save(new UserImage([
+                'image' => $path
+            ]));
+        } else {
+            $userImage->image = $path;
+            $userImage->save();
+        }
 
         return response([
             'code'      => 0,
@@ -59,11 +95,22 @@ class ProfileController extends Controller
 
     public function getPhoto()
     {
-        $file  = Storage::get('/public/uploads/UxVhHiHNZ1CYyytENpJYuzTLs37OCqmIqB5xQBAL.png');
-        $file = Storage::url('uploads/UxVhHiHNZ1CYyytENpJYuzTLs37OCqmIqB5xQBAL.png');
+        /**
+         * @var UserImage $image
+        */
+        $image = Auth::user()->images()->first();
+
+        if (!empty($image)) {
+            return response([
+                'code'  => 0,
+                'message'   => 'OK',
+                'file'  => Storage::url($image->image),
+            ]);
+        }
 
         return response([
-            'file'  => $file
-        ]);
+            'code' => 1,
+            'message'   => 'У вас нет загруженных фотографий'
+        ], 404);
     }
 }

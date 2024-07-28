@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -66,5 +67,10 @@ class User extends Authenticatable
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(UserImage::class, 'user_id', 'id');
     }
 }

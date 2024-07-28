@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import axios from "axios";
-import {useStore} from "vuex";
+import {mapGetters, useStore} from "vuex";
 
 const store = useStore();
 
@@ -35,7 +35,7 @@ const loadPhoto = async () => {
     formData.append('photo', file.value);
     try {
         const response = await axios.post('/api/user/profile/photo', formData);
-        console.log(response);
+        await getPhoto();
     } catch (error) {
         const message = error?.response?.data?.message;
         store.dispatch('messages/sendError', message);
@@ -50,10 +50,10 @@ const getPhoto = async () => {
 </script>
 
 <template>
-    <div class="avatar">
+<!--    <div>
         <button @click="getPhoto">Load</button>
-        <img :src="photoSrc" alt="">
-    </div>
+        <img :src="photoSrc" alt="" class="avatar">
+    </div>-->
     <div class="col-12">
         <div class="row">
             <div class="col-2 col-md-3 col-sm-12">
@@ -67,13 +67,16 @@ const getPhoto = async () => {
                 <button @click="$refs.imgInput.click()">Выберите фото</button>
                 <button v-if="file" @click="loadPhoto">Загрузить</button>
             </div>
-            <div class="col-6">
-                <img src="" alt="" ref="preview" width="500">
+            <div class="col-6" v-show="file">
+                <img src="" alt="" ref="preview" class="avatar">
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-
+.avatar{
+    width: 300px;
+    height: 300px;
+}
 </style>

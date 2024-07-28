@@ -22,8 +22,20 @@ const loadUser = async () => {
     userLoaded.value = true;
 };
 
+
 const showImages = ref(false);
 const showEditProfile = ref(false);
+const  avatarUrl = computed(() => {
+    const images = user.value?.images;
+
+    if (!images) {
+        return null;
+    }
+
+    const mainImg = images.pop();
+    console.log(mainImg);
+    return mainImg.photo_url;
+});
 
 const updateUser = (formData) => {
     loadUser();
@@ -37,7 +49,12 @@ onMounted( async () => {
 <template>
     <div v-if="userLoaded" class="col-12">
 
-        <h1>{{user.name}}</h1>
+        <div class="d-flex">
+            <h1>{{user.name}}</h1>
+            <div class="user_main_inm" v-if="avatarUrl">
+                <img :src="avatarUrl" alt="User main avatar"  class="avatar"/>
+            </div>
+        </div>
         <a href="" @click.prevent="showEditProfile = !showEditProfile">
             Редактивровать профиль
         </a>
@@ -62,5 +79,8 @@ onMounted( async () => {
 </template>
 
 <style scoped>
-
+.avatar{
+    width: 50px;
+    height: 50px;
+}
 </style>
